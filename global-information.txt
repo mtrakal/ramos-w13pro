@@ -1,0 +1,562 @@
+Ramos W13pro 16GB - 8" Amlogic 8726M-MX Dual Core Cortex A9 1.5Ghz Android 4.0 tablet pad (5 Points, Dual Cameras, HDMI, 3G)
+Last FW: ICS.g04w138188ref.20120823 2012-09-06 W13PRO-ICS.g04w138188ref.20120823
+
+Ramos use U-Boot header: 27 05 19 56
+Compressed by LZMA. http://git.denx.de/cgi-bin/gitweb.cgi?p=u-boot.git;a=blob;f=include/image.h
+http://buffalo.nas-central.org/wiki/How_to_Extract_an_uImage
+
+http://rootzwiki.com/topic/21362-guide-build-cm9-kernel-wo-building-rom/
+http://code.google.com/p/moboot/source/browse/?r=2e9950189327540745b1d2ee10a5ac880fc21629#git%2Ftools
+git clone https://code.google.com/p/moboot
+cd moboot/tools
+gcc uimage-extract.c -o uimage-extract -lz
+
+http://beaversource.oregonstate.edu/projects/cspfl/browser/trunk/u-boot/doc/uImage.FIT/howto.txt?rev=32 (http://www.reteam.org/board/archive/index.php?t-3802.html)
+#define IH_OS_LINUX             5       /* Linux        */
+#define IH_ARCH_ARM             2       /* ARM          */
+#define IH_TYPE_KERNEL          2       /* OS Kernel Image              */
+#define IH_COMP_LZMA            3       /* lzma  Compression Used       */
+
+Oříznout soubor vytaženej z paměti na poslední znak pomocí hexeditu. Vyexportovat soubor jako *.strip (./extract_uImage.sh *.strip). Ten přejmenoval na *.lzma, který jde pak rozbalit.
+
+GZIP header in HEX: 1f 8b 08
+ELF Header (vmlinux header): 7f 45 4c 46
+
+shell@android:/ # lsusb
+Bus 001 Device 001: ID 1d6b:0002
+Bus 002 Device 001: ID 1d6b:0002
+Bus 002 Device 002: ID 0bda:8176
+
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002 Device 002: ID 0BDA:8176 Realtek Semiconductor Corp. RTL8188CUS 802.11n WLAN Adapter
+
+shell@android:/proc/bus/usb # cat devices
+cat devices
+
+T:  Bus=02 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=480  MxCh= 1
+B:  Alloc=  0/800 us ( 0%), #Int=  0, #Iso=  0
+D:  Ver= 2.00 Cls=09(hub  ) Sub=00 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1d6b ProdID=0002 Rev= 3.00
+S:  Manufacturer=Linux 3.0.8 dwc_otg_hcd
+S:  Product=DWC OTG Controller
+S:  SerialNumber=lm1
+C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=  0mA
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+E:  Ad=81(I) Atr=03(Int.) MxPS=   4 Ivl=256ms
+
+T:  Bus=02 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=8176 Rev= 2.00
+S:  Manufacturer=Realtek
+S:  Product=802.11n WLAN Adapter
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 4 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtl8192cu
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=125us
+
+T:  Bus=01 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=480  MxCh= 1
+B:  Alloc=  0/800 us ( 0%), #Int=  0, #Iso=  0
+D:  Ver= 2.00 Cls=09(hub  ) Sub=00 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1d6b ProdID=0002 Rev= 3.00
+S:  Manufacturer=Linux 3.0.8 dwc_otg_hcd
+S:  Product=DWC OTG Controller
+S:  SerialNumber=lm0
+C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=  0mA
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+E:  Ad=81(I) Atr=03(Int.) MxPS=   4 Ivl=256ms
+
+shell@android:/proc/bus/input # cat devices
+cat devices
+I: Bus=0010 Vendor=0001 Product=0001 Version=0100
+N: Name="aml_keypad"
+P: Phys=keypad/input0
+S: Sysfs=/devices/platform/meson-remote/input/input0
+U: Uniq=
+H: Handlers=kbd mouse0 event0
+B: PROP=0
+B: EV=7
+B: KEY=7fffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff fffffffe
+B: REL=103
+
+I: Bus=0010 Vendor=0001 Product=0001 Version=0100
+N: Name="adc_keypad"
+P: Phys=adc_keypad/input0
+S: Sysfs=/devices/platform/m1-adckp.0/input/input1
+U: Uniq=
+H: Handlers=kbd event1
+B: PROP=0
+B: EV=100003
+B: KEY=40000800 c0040 0 0 0
+
+I: Bus=0010 Vendor=0001 Product=0001 Version=0100
+N: Name="key_input"
+P: Phys=key_input/input0
+S: Sysfs=/devices/platform/meson-keyinput.0/input/input2
+U: Uniq=
+H: Handlers=kbd event2
+B: PROP=0
+B: EV=100003
+B: KEY=100000 0 0 0
+
+I: Bus=0019 Vendor=0001 Product=0001 Version=0100
+N: Name="axp20-supplyer"
+P: Phys=m1kbd/input2
+S: Sysfs=/devices/i2c-2/2-0034/axp20-supplyer.28/input/input3
+U: Uniq=
+H: Handlers=kbd event3
+B: PROP=0
+B: EV=7
+B: KEY=100000 0 0 0
+B: REL=0
+
+I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+N: Name="AML-RT5631 hp switch"
+P: Phys=ALSA
+S: Sysfs=/devices/platform/soc-audio/sound/card0/input4
+U: Uniq=
+H: Handlers=event4
+B: PROP=0
+B: EV=21
+B: SW=4
+
+I: Bus=0018 Vendor=0000 Product=0000 Version=0000
+N: Name="bma250"
+P: Phys=
+S: Sysfs=/devices/virtual/input/input5
+U: Uniq=
+H: Handlers=event5
+B: PROP=0
+B: EV=d
+B: REL=3c4
+B: ABS=3000007
+
+I: Bus=0018 Vendor=0000 Product=0000 Version=0000
+N: Name="pixcir168"
+P: Phys=
+S: Sysfs=/devices/i2c-0/0-005c/input/input6
+U: Uniq=
+H: Handlers=kbd event6
+B: PROP=0
+B: EV=b
+B: KEY=400 0 0 0 0 1000 40000800 0 0 0 0
+B: ABS=2610000 0
+
+I: Bus=0018 Vendor=0000 Product=0000 Version=0000
+N: Name="ft5x06"
+P: Phys=
+S: Sysfs=/devices/i2c-0/0-0038/input/input7
+U: Uniq=
+H: Handlers=event7
+B: PROP=0
+B: EV=9
+B: ABS=2600000 0
+
+
+shell@android:/ # df
+df
+Filesystem             Size   Used   Free   Blksize
+/dev                   440M    32K   440M   4096
+/mnt/asec              440M     0K   440M   4096
+/mnt/obb               440M     0K   440M   4096
+/system                314M   169M   145M   4096
+/data                  802M   305M   496M   4096
+/cache                 255M    49M   206M   4096
+/mnt/sdcard             13G     2G    11G   4096
+/mnt/secure/asec        13G     2G    11G   4096
+/mnt/sdcard/external_sdcard     1G   669M   702M   32768
+
+shell@android:/proc $ cat mtd
+cat mtd
+dev:    size   erasesize  name
+mtd0: 00800000 00200000 "bootloader"
+mtd1: 00800000 00800000 "logo"
+mtd2: 00800000 00800000 "aml_logo"
+mtd3: 00800000 00800000 "recovery"
+mtd4: 00800000 00800000 "boot"
+mtd5: 20000000 00800000 "system"
+mtd6: 10000000 00800000 "cache"
+mtd7: 40000000 00800000 "userdata"
+mtd8: 38c000000 00800000 "NFTL_Part"
+
+
+
+shell@android:/proc # cat cpuinfo
+cat cpuinfo
+Processor       : ARMv7 Processor rev 0 (v7l)
+processor       : 0
+BogoMIPS        : 670.23
+
+processor       : 1
+BogoMIPS        : 670.23
+
+Features        : swp half thumb fastmult vfp edsp neon vfpv3
+CPU implementer : 0x41
+CPU architecture: 7
+CPU variant     : 0x3
+CPU part        : 0xc09
+CPU revision    : 0
+
+Hardware        : Amlogic Meson6 g04 customer platform
+Revision        : 0020
+Serial          : 000000000000000c
+
+shell@android:/proc # cat meminfo
+cat meminfo
+MemTotal:         901984 kB
+MemFree:          128388 kB
+Buffers:           16080 kB
+Cached:           208072 kB
+SwapCached:            0 kB
+Active:           359220 kB
+Inactive:         145604 kB
+Active(anon):     280724 kB
+Inactive(anon):      408 kB
+Active(file):      78496 kB
+Inactive(file):   145196 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+HighTotal:        524288 kB
+HighFree:           1256 kB
+LowTotal:         377696 kB
+LowFree:          127132 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:                 0 kB
+Writeback:             0 kB
+AnonPages:        280704 kB
+Mapped:            68104 kB
+Shmem:               460 kB
+Slab:              20952 kB
+SReclaimable:       9000 kB
+SUnreclaim:        11952 kB
+KernelStack:        4856 kB
+PageTables:         6672 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:      450992 kB
+Committed_AS:    4979028 kB
+VmallocTotal:     262144 kB
+VmallocUsed:      137340 kB
+VmallocChunk:      58308 kB
+
+shell@android:/proc/asound # cat cards
+cat cards
+ 0 [AMLRT5631      ]: SOC-Audio - AML-RT5631
+                      AML-RT5631
+                      
+1|shell@android:/proc # cat devices
+cat devices
+Character devices:
+  1 mem
+  2 pty
+  3 ttyp
+  4 /dev/vc/0
+  4 tty
+  4 ttyS
+  5 /dev/tty
+  5 /dev/console
+  5 /dev/ptmx
+  5 ttyprintk
+  7 vcs
+ 10 misc
+ 13 input
+ 29 fb
+ 81 video4linux
+ 89 i2c
+ 90 mtd
+108 ppp
+116 alsa
+125 pixcir_i2c_ts
+128 ptm
+136 pts
+166 ttyACM
+180 usb
+188 ttyUSB
+189 usb_device
+229 hvc
+231 ubi1
+232 dsp
+233 amstream
+234 ubi0
+235 mali
+236 ump
+237 ttyGS
+238 vm
+239 amvideo
+240 wifi_power
+241 amhdmitx
+242 amaudio
+243 efuse
+244 vdin
+245 am_key_input
+246 am_adc_kpd
+247 amremote
+248 nand_env
+249 ppmgr
+250 ge2d
+251 BaseRemoteCtl
+252 uio
+253 rtc
+254 tv
+
+Block devices:
+259 blkext
+  7 loop
+  8 sd
+ 11 sr
+ 31 mtdblock
+ 65 sd
+ 66 sd
+ 67 sd
+ 68 sd
+ 69 sd
+ 70 sd
+ 71 sd
+128 sd
+129 sd
+130 sd
+131 sd
+132 sd
+133 sd
+134 sd
+135 sd
+250 avnftl
+253 memorycard
+254 device-mapper
+
+1|shell@android:/proc # cat iomem
+cat iomem
+00000000-00000000 : aml_rt5631_audio.0
+01200230-0120024c : AMLOGIC_CARD
+80000000-83ffffff : System RAM
+8021f000-808fd317 : Kernel text
+808fe000-80ab7547 : Kernel data
+84100000-846fffff : mesonfb.0
+84700000-847fffff : mesonfb.0
+84800000-867fffff : mesonstream.0
+86800000-887fffff : vdin
+86800000-887fffff : vdin
+88800000-897fffff : vm.0
+8a700000-8b6bffff : ppmgr.0
+8b700000-8bdfffff : mesonstream.0
+8be00000-9fefffff : System RAM
+a0000000-bfffffff : System RAM
+c1108600-c1108624 : aml_nand.0
+d0060000-d0060097 : Mali-400 GP
+d0061000-d006102f : Mali-400 L2 cache
+d0063000-d0063023 : Mali-400 MMU for GP
+d0064000-d0064023 : Mali-400 MMU for PP 0
+d0065000-d0065023 : Mali-400 MMU for PP 1
+d0068000-d00690ef : Mali-400 PP 0
+d006a000-d006b0ef : Mali-400 PP 1
+f1108500-f110851f : aml-i2c.0
+f11087c0-f11087df : aml-i2c.1
+f3100500-f310051c : aml-i2c.2
+
+shell@android:/proc $ cat modules
+cat modules
+8192cu 437155 0 - Live 0xbf057000
+mali 226118 16 - Live 0xbf010000
+ump 38454 21 mali, Live 0xbf000000
+
+shell@android:/proc $ cat mounts
+cat mounts
+rootfs / rootfs ro,relatime 0 0
+tmpfs /dev tmpfs rw,nosuid,relatime,mode=755 0 0
+devpts /dev/pts devpts rw,relatime,mode=600,ptmxmode=000 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+none /acct cgroup rw,relatime,cpuacct 0 0
+tmpfs /mnt/asec tmpfs rw,relatime,mode=755,gid=1000 0 0
+tmpfs /mnt/obb tmpfs rw,relatime,mode=755,gid=1000 0 0
+none /dev/cpuctl cgroup rw,relatime,cpu 0 0
+ubi0_0 /system ubifs ro,relatime 0 0
+ubi1_0 /data ubifs rw,nosuid,nodev,relatime 0 0
+/dev/block/mtdblock6 /cache yaffs2 rw,nosuid,nodev,relatime 0 0
+none /proc/bus/usb usbfs rw,relatime 0 0
+/dev/block/vold/250:33 /mnt/sdcard vfat rw,dirsync,nosuid,nodev,noexec,relatime,uid=1000,gid=1015,fmask=0002,dmask=0002,allow_utime=0020,codepage=cp437,iocharset=iso8859-1,shortname=mixed,utf8,errors=remount-ro 0 0
+/dev/block/vold/250:33 /mnt/secure/asec vfat rw,dirsync,nosuid,nodev,noexec,relatime,uid=1000,gid=1015,fmask=0002,dmask=0002,allow_utime=0020,codepage=cp437,iocharset=iso8859-1,shortname=mixed,utf8,errors=remount-ro 0 0
+tmpfs /mnt/sdcard/.android_secure tmpfs ro,relatime,size=0k,mode=000 0 0
+/dev/block/vold/253:1 /mnt/sdcard/external_sdcard vfat rw,dirsync,nosuid,nodev,noexec,relatime,uid=1000,gid=1015,fmask=0002,dmask=0002,allow_utime=0020,codepage=cp437,iocharset=iso8859-1,shortname=mixed,utf8,errors=remount-ro 0 0
+
+1|shell@android:/proc $ cat version
+cat version
+Linux version 3.0.8 (texet@texet.ru) (gcc version 4.4.3 (ctng-1.6.1) ) #15 SMP PREEMPT Thu Aug 23 10:57:19 CST 2012
+
+shell@android:/proc $ cat vmallocinfo
+cat vmallocinfo
+0xbf000000-0xbf00b000   45056 module_alloc_update_bounds+0xc/0x5c pages=10 vmalloc
+0xbf010000-0xbf049000  233472 module_alloc_update_bounds+0xc/0x5c pages=56 vmalloc
+0xbf057000-0xbf0c3000  442368 module_alloc_update_bounds+0xc/0x5c pages=107 vmalloc
+0xe0006000-0xe0012000   49152 zisofs_init+0xc/0x28 pages=11 vmalloc
+0xe0012000-0xe001e000   49152 deflate_init+0x60/0xbc pages=11 vmalloc
+0xe001e000-0xe0020000    8192 malifix_init+0x84/0x118 [mali] ioremap
+0xe0020000-0xe0031000   69632 stbuf_fetch_init+0x3c/0x9c ioremap
+0xe0031000-0xe0042000   69632 lzo_init+0x10/0x24 pages=16 vmalloc
+0xe0042000-0xe0067000  151552 deflate_init+0x1c/0xbc pages=36 vmalloc
+0xe00c0000-0xe00c2000    8192 malifix_init+0xa4/0x118 [mali] ioremap
+0xe00c2000-0xe00c4000    8192 mali_core_renderunit_map_registers+0x60/0x230 [mali] ioremap
+0xe00c4000-0xe00c7000   12288 mali_core_renderunit_map_registers+0x60/0x230 [mali] ioremap
+0xe00c8000-0xe00cb000   12288 mali_core_renderunit_map_registers+0x60/0x230 [mali] ioremap
+0xe00cc000-0xe00ce000    8192 mali_memory_core_resource_mmu+0x124/0x3ac [mali] ioremap
+0xe00ce000-0xe00d0000    8192 mali_memory_core_resource_mmu+0x124/0x3ac [mali] ioremap
+0xe00d0000-0xe00d2000    8192 mali_memory_core_resource_mmu+0x124/0x3ac [mali] ioremap
+0xe00d2000-0xe00d4000    8192 mali_l2_cache_core_create+0xfc/0x224 [mali] ioremap
+0xe00d4000-0xe00d7000   12288 ubi_attach_mtd_dev+0x454/0xa74 pages=2 vmalloc
+0xe00d7000-0xe00da000   12288 ubi_attach_mtd_dev+0x468/0xa74 pages=2 vmalloc
+0xe00da000-0xe00e3000   36864 ubi_read_volume_table+0x5c8/0x93c pages=8 vmalloc
+0xe00ec000-0xe00ef000   12288 ubifs_fill_super+0x498/0x10e4 pages=2 vmalloc
+0xe00f2000-0xe00f4000    8192 ubifs_lpt_init+0x64/0x4ac pages=1 vmalloc
+0xe00fe000-0xe0101000   12288 ubi_attach_mtd_dev+0x454/0xa74 pages=2 vmalloc
+0xe0101000-0xe0104000   12288 ubi_attach_mtd_dev+0x468/0xa74 pages=2 vmalloc
+0xe0104000-0xe010d000   36864 ubi_read_volume_table+0x5c8/0x93c pages=8 vmalloc
+0xe0116000-0xe0119000   12288 ubifs_fill_super+0x498/0x10e4 pages=2 vmalloc
+0xe0119000-0xe011c000   12288 ubifs_fill_super+0x88c/0x10e4 pages=2 vmalloc
+0xe011c000-0xe011e000    8192 ubifs_lpt_init+0x64/0x4ac pages=1 vmalloc
+0xe0120000-0xe0122000    8192 ubifs_lpt_init+0x40/0x4ac pages=1 vmalloc
+0xe0122000-0xe0125000   12288 ubifs_lpt_init+0x174/0x4ac pages=2 vmalloc
+0xe0125000-0xe0128000   12288 ubifs_mount_orphans+0x420/0x4b0 pages=2 vmalloc
+0xe0140000-0xe0161000  135168 binder_mmap+0x80/0x204 ioremap
+0xe01f8000-0xe01fa000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe01fa000-0xe01fc000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe01fc000-0xe01fe000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe01fe000-0xe0200000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0200000-0xe0301000 1052672 osd_probe+0x150/0x530 ioremap
+0xe0301000-0xe0303000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0303000-0xe0305000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0305000-0xe0307000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0307000-0xe0309000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0309000-0xe030b000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe030b000-0xe030d000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe030d000-0xe030f000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe030f000-0xe0311000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0311000-0xe0313000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0313000-0xe0315000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0315000-0xe0317000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0317000-0xe0319000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0319000-0xe031b000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe031b000-0xe031d000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe031d000-0xe031f000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0323000-0xe0325000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0325000-0xe0327000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0327000-0xe0329000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0329000-0xe032b000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe032b000-0xe032d000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe032d000-0xe032f000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe032f000-0xe0331000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0331000-0xe0333000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0333000-0xe0335000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0335000-0xe0337000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0337000-0xe0339000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0339000-0xe033b000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe033b000-0xe033d000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe034c000-0xe034e000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0352000-0xe0354000    8192 os_allocate+0x5c/0x3d4 [ump] pages=1 vmalloc
+0xe0369000-0xe036e000   20480 rtw_alloc_etherdev+0x30/0xb0 [8192cu] pages=4 vmalloc
+0xe036e000-0xe037e000   65536 _rtw_zvmalloc+0xc/0x68 [8192cu] pages=15 vmalloc
+0xe037e000-0xe0387000   36864 _rtw_zvmalloc+0xc/0x68 [8192cu] pages=8 vmalloc
+0xe0387000-0xe0389000    8192 _rtw_zvmalloc+0xc/0x68 [8192cu] pages=1 vmalloc
+0xe0389000-0xe038c000   12288 _rtw_zvmalloc+0xc/0x68 [8192cu] pages=2 vmalloc
+0xe038c000-0xe0397000   45056 _rtw_zvmalloc+0xc/0x68 [8192cu] pages=10 vmalloc
+0xe0397000-0xe03aa000   77824 _rtw_zvmalloc+0xc/0x68 [8192cu] pages=18 vmalloc
+0xe03aa000-0xe03ad000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe03ad000-0xe03b0000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe03b0000-0xe03b3000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe03b5000-0xe03b8000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe0400000-0xe0501000 1052672 video_init+0x84/0x31c ioremap
+0xe0600000-0xe0701000 1052672 video_init+0xc8/0x31c ioremap
+0xe0753000-0xe0756000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe0756000-0xe0759000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe075d000-0xe0760000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe0760000-0xe0763000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe0800000-0xe0e01000 6295552 osd_probe+0x150/0x530 ioremap
+0xe0e97000-0xe0e9a000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe0ea4000-0xe0ea7000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe0eaf000-0xe0eb2000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe0eb2000-0xe0eb5000   12288 os_allocate+0x5c/0x3d4 [ump] pages=2 vmalloc
+0xe1000000-0xe1401000 4198400 video_init+0x40/0x31c ioremap
+0xe1401000-0xe1c02000 8392704 ubi_attach_mtd_dev+0x454/0xa74 pages=2048 vmalloc vpages
+0xe1d00000-0xe1dff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe1e00000-0xe1eff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe2000000-0xe3001000 16781312 set_vm_buf_info+0x1c/0x24 ioremap
+0xe3001000-0xe3802000 8392704 ubi_attach_mtd_dev+0x468/0xa74 pages=2048 vmalloc vpages
+0xe3802000-0xe3ff3000 8327168 ubifs_fill_super+0x498/0x10e4 pages=2032 vmalloc vpages
+0xe57c6000-0xe5fc7000 8392704 ubi_attach_mtd_dev+0x454/0xa74 pages=2048 vmalloc vpages
+0xe5fc7000-0xe67c8000 8392704 ubi_attach_mtd_dev+0x468/0xa74 pages=2048 vmalloc vpages
+0xe67c8000-0xe6fb9000 8327168 ubifs_fill_super+0x498/0x10e4 pages=2032 vmalloc vpages
+0xe6fb9000-0xe77aa000 8327168 ubifs_fill_super+0x88c/0x10e4 pages=2032 vmalloc vpages
+0xe77aa000-0xe7f9b000 8327168 ubifs_lpt_init+0x174/0x4ac pages=2032 vmalloc vpages
+0xe7f9b000-0xe878c000 8327168 ubifs_mount_orphans+0x420/0x4b0 pages=2032 vmalloc vpages
+0xe8800000-0xe88ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe8900000-0xe89ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe8a00000-0xe8aff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe8c00000-0xe8cff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe8e00000-0xe8eff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe8f00000-0xe8fff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe9000000-0xe90ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe9100000-0xe91ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe9200000-0xe92ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe9400000-0xe94ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe9600000-0xe96ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe9a00000-0xe9aff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe9e00000-0xe9eff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xe9f00000-0xe9fff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xea000000-0xea0ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xea100000-0xea1ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xea600000-0xea6ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xea700000-0xea7ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xea800000-0xea8ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xea900000-0xea9ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xeaa00000-0xeaaff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xeab00000-0xeabff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xeac00000-0xeacff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xead00000-0xeadff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xeba00000-0xebaff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xebc00000-0xebcff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xebd00000-0xebdff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xebf00000-0xebfff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xec400000-0xec4ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xec600000-0xec6ff000 1044480 binder_mmap+0x80/0x204 ioremap
+0xefff0000-0xf0000000   65536 pcpu_get_vm_areas+0x0/0x5d8 vmalloc
+
+shell@android:/sdcard/romdump20120929 # dd if=/dev/mtd/mtd0 of=./mtd0_bootloader.img
+ of=./mtd0_bootloader.img                                                     <
+16384+0 records in
+16384+0 records out
+8388608 bytes transferred in 0.693 secs (12104773 bytes/sec)
+shell@android:/sdcard/romdump20120929 # dd if=/dev/mtd/mtd1 of=./mtd1_logo.img
+ of=./mtd1_logo.img                                                           <
+16384+0 records in
+16384+0 records out
+8388608 bytes transferred in 1.603 secs (5233067 bytes/sec)
+shell@android:/sdcard/romdump20120929 # dd if=/dev/mtd/mtd2 of=./mtd2_aml_logo.img
+ of=./mtd2_aml_logo.img                                                       <
+16384+0 records in
+16384+0 records out
+8388608 bytes transferred in 1.554 secs (5398074 bytes/sec)
+shell@android:/sdcard/romdump20120929 # dd if=/dev/mtd/mtd3 of=./mtd3_recovery.img
+ of=./mtd3_recovery.img                                                       <
+16384+0 records in
+16384+0 records out
+8388608 bytes transferred in 1.558 secs (5384215 bytes/sec)
+shell@android:/sdcard/romdump20120929 # dd if=/dev/mtd/mtd4 of=./mtd4_boot.img
+ of=./mtd4_boot.img                                                           <
+16384+0 records in
+16384+0 records out
+8388608 bytes transferred in 1.574 secs (5329484 bytes/sec)
+
+
+Building CM9:
+http://forum.xda-developers.com/showthread.php?t=1312927&page=91
+The first, you must download source CM9. I hope, you know, how do it. Then download folder "device" from here https://github.com/naobsd/cm_device_amlogic_aml8726m. You must place it on .../android/device/aml8726m/. You should change settings under the device. extract-files.sh - script to copy proprietary files from you device. you can copy this from you firmware manualy, but you should change this script: remove all "adb pull" and to check files on existence (I didn't have some). start building android by command "lunch".
+
+Sources:
+http://forum.xda-developers.com/showthread.php?t=1312927
+http://buffalo.nas-central.org/wiki/How_to_Extract_an_uImage
+http://forum.xda-developers.com/showthread.php?t=443994
+http://android-dls.com/wiki/index.php?title=HOWTO:_Unpack%2C_Edit%2C_and_Re-Pack_Boot_Images
